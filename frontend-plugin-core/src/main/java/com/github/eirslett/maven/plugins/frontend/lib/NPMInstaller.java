@@ -81,6 +81,7 @@ public class NPMInstaller {
             if (!npmProvided() && !npmIsAlreadyInstalled()) {
                 installNpm();
             }
+            // TODO do not run if node version manager
             copyNpmScripts();
         }
     }
