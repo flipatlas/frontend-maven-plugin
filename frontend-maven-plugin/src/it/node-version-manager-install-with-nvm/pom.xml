@@ -14,13 +14,13 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>Install fnm and node</id>
+                        <id>Install nvm</id>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>${basedir}/install-fnm-and-node.sh</executable>
+                            <executable>${basedir}/install-nvm.sh</executable>
                         </configuration>
                     </execution>
                 </executions>
@@ -31,7 +31,17 @@
                 <!-- NB! Set <version> to the latest released version of frontend-maven-plugin, like in README.md -->
                 <version>@project.version@</version>
 
+                <configuration>
+                    <nodeVersionManagerRoot>${basedir}/.nvm</nodeVersionManagerRoot>
+                </configuration>
+
                 <executions>
+                    <execution>
+                        <id>install node</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                    </execution>
                     <execution>
                         <id>npm ci</id>
                         <goals>

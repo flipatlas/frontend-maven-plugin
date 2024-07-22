@@ -20,11 +20,16 @@ public class NvmRunner {
     }
 
     public boolean isNvmAvailable() {
+        logger.info("System vars: {}", System.getenv().get("PATH"));
+
         return executableProvider.isNvmAvailable();
     }
 
+    // TODO pass version to install
     public void installNode() {
         NodeVersionManager nodeVersionManager = executableProvider.findNvmAvailable();
+        logger.info("Using Node Version Manager [{}] to install node", nodeVersionManager);
+
         execute(Arrays.asList(
             nodeVersionManager.getExecutable(),
             nodeVersionManager.getInstallCommand()

@@ -59,6 +59,9 @@ public abstract class AbstractFrontendMojo extends AbstractMojo {
     @Parameter(defaultValue = "${repositorySystemSession}", readonly = true)
     private RepositorySystemSession repositorySystemSession;
 
+    @Parameter(property="nodeVersionManagerDirectory", required = false)
+    private File nodeVersionManagerDirectory;
+
     /**
      * Determines if this execution should be skipped.
      */
@@ -90,9 +93,12 @@ public abstract class AbstractFrontendMojo extends AbstractMojo {
             if (installDirectory == null) {
                 installDirectory = workingDirectory;
             }
+            if (nodeVersionManagerDirectory == null) {
+                nodeVersionManagerDirectory = workingDirectory;
+            }
             try {
                 execute(new FrontendPluginFactory(workingDirectory, installDirectory,
-                        new RepositoryCacheResolver(repositorySystemSession)));
+                        new RepositoryCacheResolver(repositorySystemSession), nodeVersionManagerDirectory));
             } catch (TaskRunnerException e) {
                 if (testFailureIgnore && isTestingPhase()) {
                     getLog().error("There are test failures.\nFailed to run task: " + e.getMessage(), e);

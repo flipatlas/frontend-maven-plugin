@@ -7,6 +7,7 @@ public interface InstallConfig {
   File getWorkingDirectory();
   CacheResolver getCacheResolver();
   Platform getPlatform();
+  File getNodeVersionManagerDirectory();
 }
 
 final class DefaultInstallConfig implements InstallConfig {
@@ -15,15 +16,19 @@ final class DefaultInstallConfig implements InstallConfig {
   private final File workingDirectory;
   private final CacheResolver cacheResolver;
   private final Platform platform;
-  
+  private final File nodeVersionManagerDirectory;
+
   public DefaultInstallConfig(File installDirectory,
                               File workingDirectory,
                               CacheResolver cacheResolver,
-                              Platform platform) {
+                              Platform platform,
+                              File nodeVersionManagerDirectory
+  ) {
     this.installDirectory = installDirectory;
     this.workingDirectory = workingDirectory;
     this.cacheResolver = cacheResolver;
     this.platform = platform;
+    this.nodeVersionManagerDirectory = nodeVersionManagerDirectory;
   }
 
   @Override
@@ -45,4 +50,7 @@ final class DefaultInstallConfig implements InstallConfig {
     return this.platform;
   }
 
+  public File getNodeVersionManagerDirectory() {
+    return nodeVersionManagerDirectory;
+  }
 }

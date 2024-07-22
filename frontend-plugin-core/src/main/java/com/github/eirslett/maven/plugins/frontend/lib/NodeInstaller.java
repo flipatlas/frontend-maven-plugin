@@ -18,7 +18,7 @@ public class NodeInstaller {
 
     private static final Object LOCK = new Object();
 
-    private String npmVersion, nodeVersion, nodeDownloadRoot, userName, password;
+    private String npmVersion, nodeVersion, nodeDownloadRoot, nodeVersionManagerRoot, userName, password;
 
     private final Logger logger;
 
@@ -42,6 +42,11 @@ public class NodeInstaller {
 
     public NodeInstaller setNodeDownloadRoot(String nodeDownloadRoot) {
         this.nodeDownloadRoot = nodeDownloadRoot;
+        return this;
+    }
+
+    public NodeInstaller setNodeVersionManagerRoot(String nodeVersionManagerRoot) {
+        this.nodeVersionManagerRoot = nodeVersionManagerRoot;
         return this;
     }
 
@@ -88,6 +93,9 @@ public class NodeInstaller {
                     nvmRunner.installNode();
                     return;
                 }
+                if (this.nodeVersion.equals("provided")) {
+                    throw new RuntimeException("Provided node version requires Node Version Manager but none was found");
+                }
 
                 if (!this.nodeVersion.startsWith("v")) {
                     this.logger.warn("Node version does not start with naming convention 'v'.");
@@ -113,7 +121,11 @@ public class NodeInstaller {
                 final String version =
                     new NodeExecutor(executorConfig, Arrays.asList("--version"), null).executeAndGetResult(logger);
 
-                if (version.equals(this.nodeVersion)) {
+                if (version.equals("provided")) {
+                    this.logger.info("Node version is provided in environment");
+                    // TODO get nodeVersion from version files
+                    return false;
+                } else if (version.equals(this.nodeVersion)) {
                     this.logger.info("Node {} is already installed.", version);
                     return true;
                 } else {

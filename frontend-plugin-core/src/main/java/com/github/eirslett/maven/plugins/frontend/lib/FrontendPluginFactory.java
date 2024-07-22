@@ -10,15 +10,17 @@ public final class FrontendPluginFactory {
     private final File workingDirectory;
     private final File installDirectory;
     private final CacheResolver cacheResolver;
+    private final File nodeVersionManagerDirectory;
 
     public FrontendPluginFactory(File workingDirectory, File installDirectory){
-        this(workingDirectory, installDirectory, getDefaultCacheResolver(installDirectory));
+        this(workingDirectory, installDirectory, getDefaultCacheResolver(installDirectory), workingDirectory);
     }
 
-    public FrontendPluginFactory(File workingDirectory, File installDirectory, CacheResolver cacheResolver){
+    public FrontendPluginFactory(File workingDirectory, File installDirectory, CacheResolver cacheResolver, File nodeVersionManagerDirectory){
         this.workingDirectory = workingDirectory;
         this.installDirectory = installDirectory;
         this.cacheResolver = cacheResolver;
+        this.nodeVersionManagerDirectory = nodeVersionManagerDirectory;
     }
 
     public BunInstaller getBunInstaller(ProxyConfig proxy) {
@@ -93,7 +95,7 @@ public final class FrontendPluginFactory {
     }
 
     private InstallConfig getInstallConfig() {
-        return new DefaultInstallConfig(installDirectory, workingDirectory, cacheResolver, defaultPlatform);
+        return new DefaultInstallConfig(installDirectory, workingDirectory, cacheResolver, defaultPlatform, nodeVersionManagerDirectory);
     }
 
     private static final CacheResolver getDefaultCacheResolver(File root) {

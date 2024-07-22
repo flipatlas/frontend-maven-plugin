@@ -14,7 +14,6 @@ public class ExecutableProvider {
     final Logger logger = LoggerFactory.getLogger(getClass());
     final InstallConfig config;
 
-
     public ExecutableProvider(InstallConfig config) {
         this.config = config;
     }
@@ -25,7 +24,7 @@ public class ExecutableProvider {
     }
 
     public File getNode() {
-        return new File(findExecutable("node"));
+        return new File(findExecutablePath("node"));
     }
 
     public boolean isNpmAvailable() {
@@ -34,23 +33,23 @@ public class ExecutableProvider {
     }
 
     public File getNpm() {
-        return new File(findExecutable("npm"));
+        return new File(findExecutablePath("npm"));
     }
 
     public boolean isNvmAvailable() {
         NodeVersionManager nodeVersionManager = findNvmAvailable();
+        logger.info("Found Node Version Manager: {}", nodeVersionManager);
         return nodeVersionManager != null;
     }
 
     public NodeVersionManager findNvmAvailable() {
         for (NodeVersionManager nvmType : NodeVersionManager.values()) {
-            String version = getExecutableVersion(nvmType.getExecutable());
-            if(isValidVersion(version)) return nvmType;
+            if(isCommandAvailable(nvmType.getExecutable())) return nvmType;
         }
         return null;
     }
 
-    private String findExecutable(String executable) {
+    private String findExecutablePath(String executable) {
         List<String> command;
         if (config.getPlatform().isWindows()) {
             command = Arrays.asList("where", executable);
@@ -59,6 +58,13 @@ public class ExecutableProvider {
         }
 
         return execute(command);
+    }
+
+    private boolean isCommandAvailable(String executable) {
+        String maybeVersion = getExecutableVersion(executable);
+        logger.info("executable version {} > {}", executable, maybeVersion);
+
+        return !maybeVersion.contains("not found") && !maybeVersion.contains("Exception");
     }
 
     private boolean isValidVersion(String version) {
@@ -72,7 +78,7 @@ public class ExecutableProvider {
     private String execute(List<String> command) {
         ProcessExecutor executor = new ProcessExecutor(
             config.getWorkingDirectory(),
-            Collections.emptyList(),
+            Collections.singletonList(config.getNodeVersionManagerDirectory().getAbsolutePath()),
             command,
             config.getPlatform(),
             Collections.emptyMap());
@@ -80,7 +86,8 @@ public class ExecutableProvider {
         try {
             return executor.executeAndGetResult(logger);
         } catch (ProcessExecutionException e) {
-            throw new RuntimeException(e);
+            // suppress terminal exception
+            return e.getMessage();
         }
     }
 }
