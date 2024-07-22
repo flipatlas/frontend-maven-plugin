@@ -82,6 +82,13 @@ public class NodeInstaller {
             }
             if (!nodeIsAlreadyInstalled()) {
                 this.logger.info("Installing node version {}", this.nodeVersion);
+
+                NvmRunner nvmRunner = new NvmRunner(config);
+                if (nvmRunner.isNvmAvailable()) {
+                    nvmRunner.installNode();
+                    return;
+                }
+
                 if (!this.nodeVersion.startsWith("v")) {
                     this.logger.warn("Node version does not start with naming convention 'v'.");
                 }

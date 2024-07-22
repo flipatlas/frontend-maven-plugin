@@ -14,6 +14,7 @@ public class ExecutableProvider {
     final Logger logger = LoggerFactory.getLogger(getClass());
     final InstallConfig config;
 
+
     public ExecutableProvider(InstallConfig config) {
         this.config = config;
     }
@@ -34,6 +35,19 @@ public class ExecutableProvider {
 
     public File getNpm() {
         return new File(findExecutable("npm"));
+    }
+
+    public boolean isNvmAvailable() {
+        NodeVersionManager nodeVersionManager = findNvmAvailable();
+        return nodeVersionManager != null;
+    }
+
+    public NodeVersionManager findNvmAvailable() {
+        for (NodeVersionManager nvmType : NodeVersionManager.values()) {
+            String version = getExecutableVersion(nvmType.getExecutable());
+            if(isValidVersion(version)) return nvmType;
+        }
+        return null;
     }
 
     private String findExecutable(String executable) {
