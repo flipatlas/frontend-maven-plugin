@@ -32,7 +32,7 @@ final class InstallNodeExecutorConfig implements NodeExecutorConfig {
   @Override
   public File getNodePath() {
     ExecutableProvider executableProvider = new ExecutableProvider(installConfig);
-    if (executableProvider.isNodeAvailable()) return executableProvider.getNode();
+    if (executableProvider.isNvmAvailable()) return executableProvider.getNode();
 
     String nodeExecutable = getPlatform().isWindows() ? NODE_WINDOWS : NODE_DEFAULT;
     return new File(installConfig.getInstallDirectory() + nodeExecutable);
@@ -41,7 +41,7 @@ final class InstallNodeExecutorConfig implements NodeExecutorConfig {
   @Override
   public File getNpmPath() {
     ExecutableProvider executableProvider = new ExecutableProvider(installConfig);
-    if (executableProvider.isNpmAvailable()) return executableProvider.getNpm();
+    if (executableProvider.isNvmAvailable()) return executableProvider.getNpm();
 
     return new File(installConfig.getInstallDirectory() + Utils.normalize(NPM));
   }

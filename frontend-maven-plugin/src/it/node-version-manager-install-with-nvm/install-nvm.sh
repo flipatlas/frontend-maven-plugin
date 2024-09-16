@@ -1,6 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 
-export NVM_DIR="$PWD/.nvm";
+# invoker env variables are not loaded yet
+export HOME="$(dirname "$0")"
+
+export NVM_DIR="$HOME/.nvm";
+mkdir "$NVM_DIR"
 echo "NVM_DIR set";
 
 (
@@ -10,5 +14,4 @@ echo "NVM_DIR set";
 );
 echo "NVM checked out";
 
-\. "$NVM_DIR/nvm.sh"
-echo "NVM loaded";
+

@@ -3,6 +3,7 @@ package com.github.eirslett.maven.plugins.frontend.lib;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -20,34 +21,18 @@ public class NvmRunner {
     }
 
     public boolean isNvmAvailable() {
-        logger.info("System vars: {}", System.getenv().get("PATH"));
-
         return executableProvider.isNvmAvailable();
     }
 
     // TODO pass version to install
-    public void installNode() {
+    public void installNode(String nodeVersion) {
         NodeVersionManager nodeVersionManager = executableProvider.findNvmAvailable();
         logger.info("Using Node Version Manager [{}] to install node", nodeVersionManager);
 
-        execute(Arrays.asList(
-            nodeVersionManager.getExecutable(),
-            nodeVersionManager.getInstallCommand()
-        ));
+        executableProvider.installNodeWithNvm(nodeVersionManager, nodeVersion);
     }
 
-    private String execute(List<String> command) {
-        ProcessExecutor executor = new ProcessExecutor(
-            config.getWorkingDirectory(),
-            Collections.emptyList(),
-            command,
-            config.getPlatform(),
-            Collections.emptyMap());
-
-        try {
-            return executor.executeAndGetResult(logger);
-        } catch (ProcessExecutionException e) {
-            throw new RuntimeException(e);
-        }
+    public File getNodeDirectory() {
+        return executableProvider.getNode();
     }
 }

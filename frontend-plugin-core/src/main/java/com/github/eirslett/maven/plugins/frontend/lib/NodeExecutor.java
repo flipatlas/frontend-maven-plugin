@@ -13,6 +13,8 @@ final class NodeExecutor {
         final String node = config.getNodePath().getAbsolutePath();
         List<String> localPaths = new ArrayList<String>();
         localPaths.add(config.getNodePath().getParent());
+        System.out.println("Node: " + node);
+        System.out.println("Args: " + arguments);
         this.executor = new ProcessExecutor(
             config.getWorkingDirectory(),
             localPaths,

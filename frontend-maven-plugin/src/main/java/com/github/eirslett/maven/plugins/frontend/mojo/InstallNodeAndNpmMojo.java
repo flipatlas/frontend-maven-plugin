@@ -27,6 +27,9 @@ public final class InstallNodeAndNpmMojo extends AbstractFrontendMojo {
     @Parameter(property = "npmDownloadRoot", required = false, defaultValue = NPMInstaller.DEFAULT_NPM_DOWNLOAD_ROOT)
     private String npmDownloadRoot;
 
+    @Parameter(property = "nodeVersionManagerRoot", required = false)
+    private String nodeVersionManagerRoot;
+
     /**
      * Where to download Node.js and NPM binaries from.
      *
@@ -81,6 +84,7 @@ public final class InstallNodeAndNpmMojo extends AbstractFrontendMojo {
             factory.getNodeInstaller(proxyConfig)
                 .setNodeVersion(nodeVersion)
                 .setNodeDownloadRoot(nodeDownloadRoot)
+                .setNodeVersionManagerRoot(nodeVersionManagerRoot)
                 .setNpmVersion(npmVersion)
                 .setUserName(server.getUsername())
                 .setPassword(server.getPassword())
@@ -96,6 +100,7 @@ public final class InstallNodeAndNpmMojo extends AbstractFrontendMojo {
             factory.getNodeInstaller(proxyConfig)
                 .setNodeVersion(nodeVersion)
                 .setNodeDownloadRoot(nodeDownloadRoot)
+                .setNodeVersionManagerRoot(nodeVersionManagerRoot)
                 .setNpmVersion(npmVersion)
                 .install();
             factory.getNPMInstaller(proxyConfig)

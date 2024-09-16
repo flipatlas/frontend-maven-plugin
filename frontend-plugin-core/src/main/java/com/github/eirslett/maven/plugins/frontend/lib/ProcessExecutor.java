@@ -66,13 +66,13 @@ final class ProcessExecutor {
 
     private int execute(final Logger logger, final OutputStream stdout, final OutputStream stderr)
             throws ProcessExecutionException {
-        logger.debug("Executing command line {}", commandLine);
+        logger.info("Executing command line {}", commandLine);
         try {
             ExecuteStreamHandler streamHandler = new PumpStreamHandler(stdout, stderr);
             executor.setStreamHandler(streamHandler);
 
             int exitValue = executor.execute(commandLine, environment);
-            logger.debug("Exit value {}", exitValue);
+            logger.info("Exit value {}", exitValue);
 
             return exitValue;
         } catch (ExecuteException e) {

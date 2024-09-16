@@ -9,29 +9,40 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>Install fnm and node</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>${basedir}/install-fnm-and-node.sh</executable>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.codehaus.mojo</groupId>-->
+<!--                <artifactId>exec-maven-plugin</artifactId>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>Install nvm</id>-->
+<!--                        <phase>generate-sources</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>exec</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <executable>${basedir}/install-nvm.sh</executable>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
                 <!-- NB! Set <version> to the latest released version of frontend-maven-plugin, like in README.md -->
                 <version>@project.version@</version>
 
+                <configuration>
+                    <nodeVersion>v20.15.1</nodeVersion>
+                    <workingDirectory>${basedir}</workingDirectory>
+                </configuration>
+
                 <executions>
+                    <execution>
+                        <id>install node</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                    </execution>
                     <execution>
                         <id>npm ci</id>
                         <goals>

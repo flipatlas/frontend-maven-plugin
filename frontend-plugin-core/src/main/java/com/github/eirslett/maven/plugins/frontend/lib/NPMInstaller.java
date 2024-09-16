@@ -78,6 +78,7 @@ public class NPMInstaller {
             if (this.npmDownloadRoot == null || this.npmDownloadRoot.isEmpty()) {
                 this.npmDownloadRoot = DEFAULT_NPM_DOWNLOAD_ROOT;
             }
+            logger.info("npm provided {}, installed {}", npmProvided(), npmIsAlreadyInstalled());
             if (!npmProvided() && !npmIsAlreadyInstalled()) {
                 installNpm();
             }

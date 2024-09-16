@@ -90,7 +90,8 @@ public class NodeInstaller {
 
                 NvmRunner nvmRunner = new NvmRunner(config);
                 if (nvmRunner.isNvmAvailable()) {
-                    nvmRunner.installNode();
+                    nvmRunner.installNode(this.nodeVersion);
+                    this.config.setInstallDirectory(nvmRunner.getNodeDirectory());
                     return;
                 }
                 if (this.nodeVersion.equals("provided")) {

@@ -4,6 +4,7 @@ import java.io.File;
 
 public interface InstallConfig {
   File getInstallDirectory();
+  void setInstallDirectory(File installDirectory);
   File getWorkingDirectory();
   CacheResolver getCacheResolver();
   Platform getPlatform();
@@ -11,8 +12,7 @@ public interface InstallConfig {
 }
 
 final class DefaultInstallConfig implements InstallConfig {
-
-  private final File installDirectory;
+  private File installDirectory;
   private final File workingDirectory;
   private final CacheResolver cacheResolver;
   private final Platform platform;
@@ -34,6 +34,11 @@ final class DefaultInstallConfig implements InstallConfig {
   @Override
   public File getInstallDirectory() {
     return this.installDirectory;
+  }
+
+  @Override
+  public void setInstallDirectory(File installDirectory) {
+    this.installDirectory = installDirectory;
   }
 
   @Override

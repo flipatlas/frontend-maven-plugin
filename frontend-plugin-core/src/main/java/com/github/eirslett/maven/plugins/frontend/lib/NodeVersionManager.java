@@ -1,11 +1,13 @@
 package com.github.eirslett.maven.plugins.frontend.lib;
 
+import java.io.File;
+
 public enum NodeVersionManager {
-    MISE("mise", "use"),
-    ASDF("asdf", "use"),
-    FNM("fnm", "use"),
-    NVS("nvs", "use"),
-    NVM("nvm", "use");
+//    MISE("mise", "use"),
+//    ASDF("asdf", "use"),
+//    NVS("nvs", "use"),
+    FNM("fnm", "install"),
+    NVM("nvm", "install");
 
 
     private final String executable;
